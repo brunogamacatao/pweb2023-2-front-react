@@ -1,10 +1,7 @@
-import axios from 'axios';
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-const URL_BACK = 'http://localhost:5000/produtos';
-
-export default function FormProduto() {
+export default function FormProduto({onCadastrar}) {
   const formVazio = () => {
     return {
       nome: '',
@@ -22,28 +19,26 @@ export default function FormProduto() {
 
   const cadastrarProduto = (e) => {
     e.preventDefault();
-    axios.post(URL_BACK, form).then(res => {
+    onCadastrar(form).then(() => {
       navigate('/');
     });
   };
 
   return (
     <form onSubmit={cadastrarProduto}>
-      <p>
-        <label>Nome:</label>
-        <input name="nome" type="text" value={form.nome} onChange={setValor}/>
-      </p>
-      <p>
-        <label>Valor:</label>
-        <input name="valor" type="number" value={form.valor} onChange={setValor}/>
-      </p>
-      <p>
-        <label>Foto:</label>
-        <input name="foto" type="text" value={form.foto} onChange={setValor}/>
-      </p>
-      <p>
-        <button>Cadastrar</button>
-      </p>
+      <div className="mb-3">
+        <label className="form-label">Nome:</label>
+        <input name="nome" type="text" value={form.nome} onChange={setValor} className="form-control"/>
+      </div>
+      <div className="mb-3">
+        <label className="form-label">Valor:</label>
+        <input name="valor" type="number" value={form.valor} onChange={setValor} className="form-control"/>
+      </div>
+      <div className="mb-3">
+        <label className="form-label">Foto:</label>
+        <input name="foto" type="text" value={form.foto} onChange={setValor} className="form-control"/>
+      </div>
+      <button className='btn btn-primary'>Cadastrar</button>
     </form>
   )
 }

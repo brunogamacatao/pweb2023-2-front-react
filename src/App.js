@@ -10,18 +10,24 @@ import FormProduto from "./componentes/FormProduto";
 import ListaDeProdutos from "./componentes/ListaDeProdutos";
 import DetalheProduto from "./componentes/DetalheProduto";
 import PaginaNaoEncontrada from "./componentes/PaginaNaoEncontrada";
-import axios from "axios";
-
-const URL_BACK = 'http://localhost:5000/produtos';
+import { getProdutos, salvarProduto, excluirProduto } from "./backend";
 
 function App() {
   const [produtos, setProdutos] = useState([]);
 
+  const cadastrarProduto = async (form) => {
+    await salvarProduto(form);
+    setProdutos(await getProdutos());
+  };
+
+  const removerProduto = async (id) => {
+    await excluirProduto(id);
+    setProdutos(await getProdutos());
+  };
+
   // função chamada quando o componente for carregado
   useEffect(() => {
-    axios.get(URL_BACK).then(res => {
-      setProdutos(res.data);
-    });
+    getProdutos().then(prods => setProdutos(prods));
   }, []);
 
   return (
@@ -30,8 +36,8 @@ function App() {
       <Cabecalho/>
       <Routes>
         <Route path="/" exact={true} element={<ListaDeProdutos produtos={produtos}/>}/>
-        <Route path="/novo" exact={true} element={<FormProduto/>}/>
-        <Route path="/detalhe/:id" exact={true} element={<DetalheProduto/>}/>
+        <Route path="/novo" exact={true} element={<FormProduto onCadastrar={cadastrarProduto}/>}/>
+        <Route path="/detalhe/:id" exact={true} element={<DetalheProduto onExcluir={removerProduto}/>}/>
         <Route path="*" element={<PaginaNaoEncontrada/>}/>
       </Routes>      
     </Router>

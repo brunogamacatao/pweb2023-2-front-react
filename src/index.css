@@ -18,6 +18,16 @@ html {
   padding: 0.5em;
   border-radius: 10px;
   justify-content: space-between;
+  width: 180px;
+}
+
+.produto .nome {
+  font-size: 1em;
+}
+
+.produto .valor {
+  font-weight: bolder;
+  font-size: 1.5em;
 }
 
 .produto img {
